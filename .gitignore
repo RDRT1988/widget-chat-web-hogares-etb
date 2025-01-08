@@ -1,0 +1,18 @@
+# VARIABLES DE ENTORNO
+# .env
+# ChatWeb/src/public/js/env.js
+
+
+# DOCUMENTOS ADJUNTOS
+ChatWeb/docs/*
+!ChatWeb/docs/.gitkeep
+
+# CARPETA CHATWEB/AUTENTICACION
+ChatWeb/Autenticacion/node_modules
+
+# CARPETA CHATWEB
+ChatWeb/node_modules
+
+# CARPETA PYTHON
+ChatWeb/python/__pycache__
+ChatWeb/python/venv

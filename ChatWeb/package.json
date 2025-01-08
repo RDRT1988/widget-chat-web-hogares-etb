@@ -1,0 +1,38 @@
+{
+  "dependencies": {
+    "all": "^0.0.0",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.0",
+    "boxicons": "^2.1.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "emoji-mart": "^5.5.2",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.0.7",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "node-emoji": "^2.1.0",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.2",
+    "socket.io-cookie": "^0.0.1",
+    "sweetalert2": "^11.7.22",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "name": "chatweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "qua": "nodemon src/index.js",
+    "prod": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

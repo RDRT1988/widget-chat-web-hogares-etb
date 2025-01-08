@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Document</title>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" media="screen,projection" />
+
+  <!-- CHATWEB_URL + ruta archivo css -->
+  <link rel="stylesheet" href="http://localhost:5526/dist/css/widget-chat.css">
+  <!-- <link rel="stylesheet" href="https://agendamientopymesetb.rpagroupcos.com/dist/css/widget-chat.css"> -->
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      /* Asegura que html y body ocupen el 100% de la altura */
+      margin: 0;
+      /* Elimina márgenes por defecto */
+    }
+
+    body {
+      background-image: url('./ChatWeb/src/public/img/fondo.png');
+      /* Llama a la imagen de fondo */
+      background-repeat: no-repeat;
+      /* No repetir la imagen */
+      background-size: cover;
+      /* Ajustar la imagen para cubrir todo el fondo */
+      background-position: center;
+      /* Centrar la imagen */
+      background-attachment: fixed;
+      /* Hacer que la imagen de fondo quede fija al hacer scroll */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="titlePagina" style="background: #0300a763; height: 8%;">
+    <h1 style="text-align: center; margin: 0rem; color: rgb(255, 255, 255);"><strong>Pagina de prueba - Widget / Chat Web ETB</strong></h1>
+  </div>
+  <!-- Contenedor Widget -->
+  <div id="cont-widget-chat-bot"></div>
+
+  <a href="http://localhost:5526/37_2024_12_27_15_46_ETB_-_Grupo_4_ScriptAgendamiento.pdf">Archivo Adjunto</a>
+
+  <!-- CHATWEB_URL + ruta archivo js -->
+  <script type="text/javascript" src="http://localhost:5526/dist/js/widget-chat.js"></script>
+  <!-- <script type="text/javascript" src="https://agendamientopymesetb.rpagroupcos.com/dist/js/widget-chat.js"></script> -->
+</body>
+
+</html>

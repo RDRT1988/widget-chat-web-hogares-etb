@@ -1,0 +1,42 @@
+<div class='chat-container hidden'>    
+    <div id='emoji-picker' class='emoji-picker'></div>
+    <div class='chat-messages' id='chat-messages'>
+      {{!-- <img src='img/logo_sistema_sm.png' alt='Avatar' class='avatar' /> --}}
+
+      <div class="chat-bubble other">
+        <h6 class="bienvenidaChat"><strong>Bienvenido a Meetings ETB, nuestro canal de VideoAtención para el Segmento Corporativo.</strong></h6>
+        <h6 class="bienvenidaChat"><strong> Aquí, a través de una videollamada con uno de nuestros Ingenieros de Soporte o un Asesor de Experiencia Especializado podrá gestionar de manera personalizada temas de Soporte Técnico o Trámites Posventa.</strong></h6>
+      </div>
+    </div>
+  <div>
+    <p id="location"></p>
+    <div class='chat-input' id='barraInferior'>
+      <textarea id='message-input' rows='3' placeholder='Escribe un mensaje' autofocus></textarea>
+      <div class="cont-chat-btns">
+        <div class="btn-group">
+          <a id='emoji-button' class='emoji-button' data-bs-toggle="tooltip" title="Stickers">😃</a>
+          <a id="btnAdjunto" class="icon-button d-none" data-bs-toggle="tooltip" title="Adjuntos">
+            <i class='bx bx-paperclip' style="font-size: 1.2rem; font-weight: bold; color: #0C82C5"></i>
+          </a>
+        </div>
+        <button id='send-button' class='telegram-button' data-bs-toggle="tooltip" title="Enviar">
+          <img src='img/enviar.ico' alt='Enviar' />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .aviso {
+    display: none;
+    color: red;
+  }
+
+  input:focus+.aviso,
+  select:focus+.aviso {
+    display: block;
+  }
+</style>
+
+<script src='/js/chat.js'></script>
