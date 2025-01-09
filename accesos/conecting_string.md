@@ -14,6 +14,29 @@ Datos de acceso para el proyecto
 ```bash
     1.  AMBIENTE DE PRUEBAS
 
+        widgetweb_hogares_etb
+
+        Puerto Asignado
+        14034 - WEB
+        Puertos Adicionales
+        15340 ->
+
+        URL: https://demoagendamientohogaretb.rpagroupcos.com/ -> 14034
+        BOT: https://demobotagendamientohogaretb.rpagroupcos.com/ -> 15340
+
+        MySQL
+        Usuario: cos_crm
+        Pass: gestiongeneralcos:2020
+        IP: 172.70.7.15
+        BD: dbp_widget_hogar_etb
+
+        RutaProyecto=/1tb/NodeJS/widgetweb_agendamiento_hogars_etb
+
+        demoasignacionagendamientohogaretb.rpagroupcos.com - 15341
+        democonsultamensajeagendamientohogaretb.rpagroupcos.com - 15342
+        demomensajesagendamientohogaretb.rpagroupcos.com - 15343
+        demoenviarmensajeagendamientohogaretb.rpagroupcos.com - 15344
+        demoapibotagendamientohogaretb.rpagroupcos.com/ -> 15345
         
 
         # TODO: API CONSULTAR NIT - CAMILO Y CARLOS SANTOS
@@ -27,7 +50,29 @@ Datos de acceso para el proyecto
 
     2.  AMBIENTE DE PRODUCCION
 
-        
+        widgetweb_hogares_etb
+
+        Puerto Asignado
+        14034 - WEB
+        Puertos Adicionales
+        15340 ->
+
+        URL: https://agendamientohogaretb.rpagroupcos.com/ -> 14034
+        BOT: https://botagendamientohogaretb.rpagroupcos.com/ -> 15340
+
+        MySQL
+        Usuario: cos_crm
+        Pass: gestiongeneralcos:2020
+        IP: 172.70.7.15
+        BD: dbp_widget_hogar_etb
+
+        RutaProyecto=/1tb/NodeJS/widgetweb_agendamiento_hogars_etb
+
+        asignacionagendamientohogaretb.rpagroupcos.com - 15341
+        consultamensajeagendamientohogaretb.rpagroupcos.com - 15342
+        mensajesagendamientohogaretb.rpagroupcos.com - 15343
+        enviarmensajeagendamientohogaretb.rpagroupcos.com - 15344
+        apibotagendamientohogaretb.rpagroupcos.com/ -> 15345
 
         # TODO: API CONSULTAR NIT - CAMILO Y CARLOS SANTOS
         URL_API_CONSULTAR_NIT = https://consultasalesforceempresas.rpagroupcos.com/consulta_segmento
