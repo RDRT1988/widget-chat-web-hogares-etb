@@ -1,8 +1,8 @@
 // ! VARIABLES GLOBALES
 // ? Garantizar estos valores segun el .env principal
 
-const CHATWEB_URL = 'http://localhost:5526'
-const AUTENTICACION_URL = 'http://localhost:5253'
+const CHATWEB_URL = 'http://localhost:8000'
+const AUTENTICACION_URL = 'http://localhost:8002'
 
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -1,17 +1,17 @@
-# WidgetWEB_Agendamiento_Pymes_ETB
+# widgetweb_hogares_etb
 
-**Autor:** Ramón Dario Rozo Torres 13 de Diciembre de 2024
-**Última Modificación:** Ramón Dario Rozo Torres 13 de Diciembre de 2024  
+**Autor:** Ramón Dario Rozo Torres 09 de Enero de 2025
+**Última Modificación:** Ramón Dario Rozo Torres 09 de Enero de 2025  
 **Versión:** 1.0.0
 
 ## Descripción
 
-Widget con chat web para la atención del segmento 4 de ETB.
+Widget con chat web para la atención del segmento hogares de ETB (Pruebas).
 
 ## Instalación
 
 ```bash
-    1.  Clonar repositorio (https://repo.groupcos.com/rpa/widgetweb_agendamiento_pymes_etb).
+    1.  Clonar repositorio (https://repo.groupcos.com/rpa/widgetweb_hogares_etb).
 
     2.  Entrar a la carpeta raiz del proyecto.
 
@@ -108,10 +108,10 @@ Nota: Para iniciar el widget debes primero levantar estos servicios y luego abri
 
 ```bash
     1.  Ambiente de pruebas
-            https://demowhatofagendamientoetb.rpagroupcos.com
+            https://XXXXXXXXX
 
     2.  Ambiente de produccion
-            https://whatofagendamientoetb.rpagroupcos.com
+            https://XXXXXXXXX
 
     3.  Autenticacion
             *   No aplica

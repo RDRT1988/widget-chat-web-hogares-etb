@@ -295,9 +295,9 @@ def arbol(lastrowid, whatsappNum, Body):
     
     # * DEFINIR MENSAJES FIJOS
     arbolIncio = 'Hola, \n En el momento que desee volver, por favor escriba <strong>inicio</strong> o <strong>INICIO</strong> para regresar al menu principal🔄'
-    arbolPaso1 = '📝 <strong>Para continuar por favor ingrese el número de NIT.</strong>\n\n ⚠️ <i>Sin dígito de verificación.</i>\n 🚫 <i>Sin espacios ni caracteres especiales.</i>\n 🔢 <i>Solo números.</i>'
-    arbolValidarNit = '❌ El NIT ingresedo es inválido. Asegúrese de que tenga 9 dígitos y no contenga dígito de verificación.'
-    arbolRedireccionarCliente = '⚠️ <strong>No hemos logrado validar la información registrada.</strong>\n\n🏠 Si su servicio es del <strong>segmento Hogares</strong>, lo invitamos a comunicarse a la línea WhatsApp 3057800000 o al 018000112170 opción 2, donde uno de nuestros asesores atenderá su solicitud.\n\n🏢 Si su servicio corresponde al <strong>segmento ETB Negocios-Pymes</strong>, lo invitamos a comunicarse a la línea WhatsApp 3057777776, o al 018000128999 opción 2, donde uno de nuestros asesores atenderá su solicitud.'
+    arbolPaso1 = '📝 <strong>Para continuar por favor ingrese el número de documento.</strong>\n\n ⚠️ <i>Minimo 7 dígitos.</i>\n 🚫 <i>Sin espacios ni caracteres especiales.</i>\n 🔢 <i>Solo números.</i>'
+    arbolValidarNit = '❌ El documento ingresedo es inválido. Asegúrese de que tenga minimo 7 dígitos.'
+    arbolRedireccionarCliente = '⚠️ <strong>No hemos logrado validar la información registrada.</strong>\n\n🏠 Si su servicio es de <strong>segmento XXXXX</strong>, lo invitamos a comunicarse a la línea WhatsApp XXXXX o al XXXXX opción XXXXX, donde uno de nuestros asesores atenderá su solicitud.\n\n🏢 Si su servicio corresponde al <strong>segmento ETB XXXXX</strong>, lo invitamos a comunicarse a la línea WhatsApp XXXXX, o al XXXXX opción XXXXX, donde uno de nuestros asesores atenderá su solicitud.'
     arbolTratamientoDatos = (
         "🔔 Al continuar, <strong>autoriza el tratamiento de datos personales</strong> y <strong>acepta los términos y condiciones</strong> "
         "de nuestro canal de atención digital. 📄 Puede consultarlos en el siguiente enlace: "
@@ -329,7 +329,7 @@ def arbol(lastrowid, whatsappNum, Body):
         "⚠️ <i>Sin espacios, solo números y sin caracteres especiales.</i>"
     )
     arbolCorreoCorporativo = (
-        "📧 <strong>Correo Corporativo:</strong> \n"
+        "📧 <strong>Correo de Contacto:</strong> \n"
         "• <i>Por favor, ingrese su correo electrónico.</i>\n"
         "⚠️ <i>Recuerda que el correo electrónico debe ser válido.</i>"
     )
@@ -383,7 +383,7 @@ def arbol(lastrowid, whatsappNum, Body):
         "⚠️ <i>Por favor, selecciona una nueva agenda disponible ya que la agenda seleccionada no está disponible.</i>"
     )
     arbolEspecialistasNoDisponibles = (
-        f"⚠️ En este momento, todos nuestros Analistas Especializados / Ingenieros de Soporte están en videollamada.\n\n"
+        f"⚠️ En este momento, todos nuestros Agentes Especializados / Agentes de Soporte están en videollamada.\n\n"
         f"Si desea esperar, permanezca en línea y le avisaremos en cuanto podamos atenderle.\n\n"
         f"También puede agendar su espacio de videoatención según disponibilidad aquí."
     )
@@ -457,142 +457,161 @@ def arbol(lastrowid, whatsappNum, Body):
 
                 # todo: Arbol - Verificar NIT
                 elif resultNavegacionArbol == 'MSG_VERIFICAR_NIT' or resultNavegacionArbol == 'MSG_ALERTA_INACTIVIDAD':
-                    if Body.isnumeric() and (len(Body) == 9):  
-                        while True:  # Bucle que se ejecuta indefinidamente hasta que se obtenga una respuesta válida
+                    if Body.isnumeric() and (len(Body) >= 7):
+                        # while True:  # Bucle que se ejecuta indefinidamente hasta que se obtenga una respuesta válida
                             # Validar que sea un número y tenga 9 dígitos
                             # Pasar valores a variables globales
                             numeroNIT = Body
-                            estadoNit = 'No corresponde a E&CI'
-
-                            # ? Consumir API consultar NIT
-                            # Variables
-                            txt_Nit = Body                              
-                            estadoGestion = "Cerrado"
-                            navegacionArbolChat = 'MSG_FIN'
-                            descripcionChat = '⚠️ No hemos logrado validar la información registrada.'
+                            estadoNit = 'Registrado'
+                            segmento = 'Hogares'
+                            razonSocial = 'Pepito Prueba'
                             
-                            # Preparar la URL y los headers
-                            url = os.getenv('URL_API_CONSULTAR_NIT')
-                            headers = {
-                                "X-API-Key": f"{os.getenv('TOKEN_API_CONSULTAR_NIT')}",
-                                "Content-Type": "application/json"
-                            }
+                            # Mensaje de confirmación
+                            navegacionArbolChat = 'MSG_CONFIRMANDO_NIT'
+                            mensajeConfirmacionNit = (
+                                f"🔍 La información ingreseda corresponde al cliente \n"
+                                f"<strong>{razonSocial}</strong> con documento <strong>{numeroNIT}</strong>. \n\n"
+                                f"<strong>¿Es correcto?</strong> \n 1. Sí \n 2. No"
+                            )
+                            descripcionChat = mensajeConfirmacionNit
+
+                            sendMessage(whatsappNum, mensajeConfirmacionNit, lastrowid)
+                            sql = f"""
+                                UPDATE {app.config['DB_NAME']}.tbl_chat 
+                                SET cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
+                                WHERE cht_id = %s;
+                            """
+                            cursor.execute(sql, (navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
+
+                            # # ? Consumir API consultar NIT
+                            # # Variables
+                            # txt_Nit = Body                              
+                            # estadoGestion = "Cerrado"
+                            # navegacionArbolChat = 'MSG_FIN'
+                            # descripcionChat = '⚠️ No hemos logrado validar la información registrada.'
                             
-                            # Cuerpo de la solicitud
-                            payload = {
-                                "account": txt_Nit
-                            }
+                            # # Preparar la URL y los headers
+                            # url = os.getenv('URL_API_CONSULTAR_NIT')
+                            # headers = {
+                            #     "X-API-Key": f"{os.getenv('TOKEN_API_CONSULTAR_NIT')}",
+                            #     "Content-Type": "application/json"
+                            # }
+                            
+                            # # Cuerpo de la solicitud
+                            # payload = {
+                            #     "account": txt_Nit
+                            # }
 
-                            # Intentar realizar la solicitud
-                            try:
-                                responseApiNit = requests.post(url, json=payload, headers=headers, verify=False)
-                                print('responseApiNit ===> ', responseApiNit)
+                            # # Intentar realizar la solicitud
+                            # try:
+                            #     responseApiNit = requests.post(url, json=payload, headers=headers, verify=False)
+                            #     print('responseApiNit ===> ', responseApiNit)
 
-                                # Respuesta 200 - Éxito o 400
-                                if responseApiNit.status_code == 200 or responseApiNit.status_code == 400:
-                                    data = responseApiNit.json()
-                                    print('result Api Nit data ===> ', data)
+                            #     # Respuesta 200 - Éxito o 400
+                            #     if responseApiNit.status_code == 200 or responseApiNit.status_code == 400:
+                            #         data = responseApiNit.json()
+                            #         print('result Api Nit data ===> ', data)
 
-                                    if data and 'data' in data and data['data']['statusNit']:  
-                                        # NIT válido (Corresponde a E&CI)
-                                        numeroNIT = data['data']['nit']
-                                        estadoNit = 'Corresponde a E&CI'
-                                        segmento = data['data']['segment']
-                                        razonSocial = data['data']['name']
+                            #         if data and 'data' in data and data['data']['statusNit']:  
+                            #             # NIT válido (Corresponde a E&CI)
+                            #             numeroNIT = data['data']['nit']
+                            #             estadoNit = 'Corresponde a E&CI'
+                            #             segmento = data['data']['segment']
+                            #             razonSocial = data['data']['name']
 
-                                        # Mensaje de confirmación
-                                        navegacionArbolChat = 'MSG_CONFIRMANDO_NIT'
-                                        mensajeConfirmacionNit = (
-                                            f"🔍 La información ingreseda corresponde al cliente \n"
-                                            f"<strong>{razonSocial}</strong> con NIT <strong>{numeroNIT}</strong>. \n\n"
-                                            f"<strong>¿Es correcto?</strong> \n 1. Sí \n 2. No"
-                                        )
-                                        descripcionChat = mensajeConfirmacionNit
+                            #             # Mensaje de confirmación
+                            #             navegacionArbolChat = 'MSG_CONFIRMANDO_NIT'
+                            #             mensajeConfirmacionNit = (
+                            #                 f"🔍 La información ingreseda corresponde al cliente \n"
+                            #                 f"<strong>{razonSocial}</strong> con NIT <strong>{numeroNIT}</strong>. \n\n"
+                            #                 f"<strong>¿Es correcto?</strong> \n 1. Sí \n 2. No"
+                            #             )
+                            #             descripcionChat = mensajeConfirmacionNit
 
-                                        sendMessage(whatsappNum, mensajeConfirmacionNit, lastrowid)
-                                        sql = f"""
-                                            UPDATE {app.config['DB_NAME']}.tbl_chat 
-                                            SET cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
-                                            WHERE cht_id = %s;
-                                        """
-                                        cursor.execute(sql, (navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
+                            #             sendMessage(whatsappNum, mensajeConfirmacionNit, lastrowid)
+                            #             sql = f"""
+                            #                 UPDATE {app.config['DB_NAME']}.tbl_chat 
+                            #                 SET cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
+                            #                 WHERE cht_id = %s;
+                            #             """
+                            #             cursor.execute(sql, (navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
                                     
-                                    else:
-                                        # NIT NO corresponde a E&CI
-                                        estadoNit = 'No corresponde a E&CI'
-                                        sendMessage(whatsappNum, arbolRedireccionarCliente, lastrowid)
-                                        sendMessage(whatsappNum, arbolFin, lastrowid)
+                            #         else:
+                            #             # NIT NO corresponde a E&CI
+                            #             estadoNit = 'No corresponde a E&CI'
+                            #             sendMessage(whatsappNum, arbolRedireccionarCliente, lastrowid)
+                            #             sendMessage(whatsappNum, arbolFin, lastrowid)
                                         
-                                        sql = f"""
-                                            UPDATE {app.config['DB_NAME']}.tbl_chat 
-                                            SET cht_numero_nit = %s, cht_estado_nit = %s, cht_descripcion = %s 
-                                            WHERE cht_id = %s;
-                                        """
-                                        cursor.execute(sql, (navegacionArbolChat, numeroNIT, estadoNit, descripcionChat, lastrowid))
+                            #             sql = f"""
+                            #                 UPDATE {app.config['DB_NAME']}.tbl_chat 
+                            #                 SET cht_numero_nit = %s, cht_estado_nit = %s, cht_descripcion = %s 
+                            #                 WHERE cht_id = %s;
+                            #             """
+                            #             cursor.execute(sql, (navegacionArbolChat, numeroNIT, estadoNit, descripcionChat, lastrowid))
 
-                                        # Cerrar el chat
-                                        cerrarChat(cursor, lastrowid, estadoGestion, navegacionArbolChat, descripcionChat)
+                            #             # Cerrar el chat
+                            #             cerrarChat(cursor, lastrowid, estadoGestion, navegacionArbolChat, descripcionChat)
                                     
-                                    break  # Si la consulta fue exitosa, salimos del bucle
+                            #         break  # Si la consulta fue exitosa, salimos del bucle
 
-                                # Respuesta 500 - Error del servidor
-                                elif responseApiNit.status_code == 500:
-                                    print("Error 500: Problema en el servidor de la API")                        
-                                    # Variables
-                                    navegacionArbolChat = 'MSG_VERIFICAR_NIT'
-                                    descripcionChat = arbolErrorAPI
+                            #     # Respuesta 500 - Error del servidor
+                            #     elif responseApiNit.status_code == 500:
+                            #         print("Error 500: Problema en el servidor de la API")                        
+                            #         # Variables
+                            #         navegacionArbolChat = 'MSG_VERIFICAR_NIT'
+                            #         descripcionChat = arbolErrorAPI
 
-                                    sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
-                                    sql = f"""
-                                        UPDATE {app.config['DB_NAME']}.tbl_chat 
-                                        SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_estado_nit = %s, cht_descripcion = %s 
-                                        WHERE cht_id = %s;
-                                    """
-                                    cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, estadoNit, descripcionChat, lastrowid))
+                            #         sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
+                            #         sql = f"""
+                            #             UPDATE {app.config['DB_NAME']}.tbl_chat 
+                            #             SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_estado_nit = %s, cht_descripcion = %s 
+                            #             WHERE cht_id = %s;
+                            #         """
+                            #         cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, estadoNit, descripcionChat, lastrowid))
 
-                                    # Esperamos 1.5 minutos antes de intentar nuevamente
-                                    time.sleep(90)
+                            #         # Esperamos 1.5 minutos antes de intentar nuevamente
+                            #         time.sleep(90)
                                 
-                                # Otros códigos de estado
-                                else:
-                                    print(f"Error inesperado: {responseApiNit.status_code}")                        
-                                    # Variables
-                                    navegacionArbolChat = 'MSG_VERIFICAR_NIT'
-                                    descripcionChat = arbolErrorAPI
+                            #     # Otros códigos de estado
+                            #     else:
+                            #         print(f"Error inesperado: {responseApiNit.status_code}")                        
+                            #         # Variables
+                            #         navegacionArbolChat = 'MSG_VERIFICAR_NIT'
+                            #         descripcionChat = arbolErrorAPI
 
-                                    sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
+                            #         sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
                                     
-                                    sql = f"""
-                                        UPDATE {app.config['DB_NAME']}.tbl_chat 
-                                        SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
-                                        WHERE cht_id = %s;
-                                    """
-                                    cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
+                            #         sql = f"""
+                            #             UPDATE {app.config['DB_NAME']}.tbl_chat 
+                            #             SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
+                            #             WHERE cht_id = %s;
+                            #         """
+                            #         cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
 
-                                    # Esperamos 1.5 minutos antes de intentar nuevamente
-                                    time.sleep(90)
+                            #         # Esperamos 1.5 minutos antes de intentar nuevamente
+                            #         time.sleep(90)
                             
-                            except requests.exceptions.RequestException as e:
-                                # Manejo de errores en la solicitud
-                                print(f"Error en la solicitud: {str(e)}")
+                            # except requests.exceptions.RequestException as e:
+                            #     # Manejo de errores en la solicitud
+                            #     print(f"Error en la solicitud: {str(e)}")
                         
-                                # Variables
-                                navegacionArbolChat = 'MSG_VERIFICAR_NIT'
-                                descripcionChat = arbolErrorAPI
+                            #     # Variables
+                            #     navegacionArbolChat = 'MSG_VERIFICAR_NIT'
+                            #     descripcionChat = arbolErrorAPI
 
-                                sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
+                            #     sendMessage(whatsappNum, arbolErrorAPI, lastrowid)
                                 
-                                sql = f"""
-                                    UPDATE {app.config['DB_NAME']}.tbl_chat 
-                                    SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
-                                    WHERE cht_id = %s;
-                                """
-                                cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
+                            #     sql = f"""
+                            #         UPDATE {app.config['DB_NAME']}.tbl_chat 
+                            #         SET cht_estado_chat = %s, cht_navegacion_arbol = %s, cht_numero_nit = %s, cht_descripcion = %s 
+                            #         WHERE cht_id = %s;
+                            #     """
+                            #     cursor.execute(sql, (estadoChat, navegacionArbolChat, numeroNIT, descripcionChat, lastrowid))
 
-                                # Esperamos 1.5 minutos antes de intentar nuevamente
-                                time.sleep(90)
+                            #     # Esperamos 1.5 minutos antes de intentar nuevamente
+                            #     time.sleep(90)
                             
-                    elif Body.isnumeric() and (len(Body) != 9):  # Si no tiene 9 dígitos
+                    elif Body.isnumeric() and (len(Body) < 7):  # Si no tiene 7 dígitos
                         sendMessage(whatsappNum, arbolValidarNit, lastrowid)
                         sendMessage(whatsappNum, arbolPaso1, lastrowid)
                         
@@ -842,7 +861,7 @@ def arbol(lastrowid, whatsappNum, Body):
                                         ])
                                         
                                         # Generar las opciones para mostrar al usuario
-                                        mensajeGruposDisponibles = f"📝 <strong>Por favor, elige un grupo:</strong>\n{listarGruposDisponibles}"
+                                        mensajeGruposDisponibles = f"📝 <strong>Por favor, elija un grupo:</strong>\n{listarGruposDisponibles}"
                                         
                                         # Pasar valores a variables globales
                                         arbolGruposDisponibles = mensajeGruposDisponibles
@@ -1188,7 +1207,7 @@ def arbol(lastrowid, whatsappNum, Body):
                                         ])
                                         
                                         # Generar las opciones para mostrar al usuario
-                                        mensajeSubGruposDisponibles = f"📝 <strong>Por favor, elige un subgrupo:</strong>\n{listarSubGruposDisponibles}"
+                                        mensajeSubGruposDisponibles = f"📝 <strong>Por favor, elija un subgrupo:</strong>\n{listarSubGruposDisponibles}"
                                         
                                         # Pasar valores a variables globales
                                         arbolSubGruposDisponibles = mensajeSubGruposDisponibles
@@ -1333,7 +1352,7 @@ def arbol(lastrowid, whatsappNum, Body):
                                                 for indice, agenda in agendasDisponibles.items()
                                             ])
                                             # Generar las opciones para mostrar al usuario
-                                            mensajeAgendasDisponibles = f"📝 <strong>Por favor, elige una agenda:</strong>\n{listarAgendasDisponibles}"
+                                            mensajeAgendasDisponibles = f"📝 <strong>Por favor, elija una agenda:</strong>\n{listarAgendasDisponibles}"
 
                                             # Pasar valores a variables globales
                                             arbolAgendasDisponibles = mensajeAgendasDisponibles
@@ -1918,7 +1937,7 @@ def arbol(lastrowid, whatsappNum, Body):
                                                 for indice, agenda in agendasDisponibles.items()
                                             ])
                                             # Generar las opciones para mostrar al usuario
-                                            mensajeAgendasDisponibles = f"📝 <strong>Por favor, elige una agenda:</strong>\n{listarAgendasDisponibles}"
+                                            mensajeAgendasDisponibles = f"📝 <strong>Por favor, elija una agenda:</strong>\n{listarAgendasDisponibles}"
 
                                             # Pasar valores a variables globales
                                             arbolAgendasDisponibles = mensajeAgendasDisponibles
